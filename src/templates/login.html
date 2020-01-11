@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mini.css/3.0.1/mini-default.min.css">
+    <link rel="stylesheet" href="/static/common.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    {% include "header.html" %}
+
+    <h1>ログイン</h1>
+
+    {% if error_message is defined %}
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="card fluid error">
+            <h2>エラー</h2>
+            <p>{{ error_message }}</p>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if succeeded_message is defined %}
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="card fluid succeeded">
+            <p>{{ succeeded_message }}</p>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    <form action="/login" method="POST">
+      <div class="row responsive-label">
+        <div class="col-sm-3">
+          <label for="name-text">ユーザ名</label>
+        </div>
+        {% if name is defined %}
+          <div class="col-sm-9">
+            <input id="name-text" class="form-input" type="text" name="name" value="{{ name }}">
+          </div>
+        {% else %}
+          <div class="col-sm-9">
+            <input id="name-text" class="form-input" type="text" name="name">
+          </div>
+        {% endif %}
+      </div>
+      <div class="row responsive-label">
+        <div class="col-sm-3">
+          <label for="password-text">パスワード</label>
+        </div>
+        <div class="col-sm-9">
+          <input id="password-text" class="form-input" type="password" name="password">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <button class="default">キャンセル</button>
+          <button class="primary">ログイン</button>
+        </div>
+      </div>
+    </form>
+
+  </body>
+</html>

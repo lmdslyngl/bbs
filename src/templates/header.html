@@ -1,0 +1,12 @@
+<header>
+  <a href="#" class="logo">LMDSSimpleBBS</a>
+  {% if not logined_user is defined or logined_user is none %}
+    <a href="/board" class="button">掲示板一覧</a>
+    <a href="/login" class="button">ログイン</a>
+    <a href="/newuser" class="button">ユーザ作成</a>
+  {% else %}
+    <a href="/board" class="button">掲示板一覧</a>
+    <a href="/edituser" class="button">ユーザ編集</a>
+    <a href="/logout" class="button">ログアウト</a>
+  {% endif %}
+</header>

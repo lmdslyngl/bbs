@@ -1,0 +1,19 @@
+{% if succeeded_message is defined %}
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card fluid succeeded">
+        <p>{{ succeeded_message }}</p>
+      </div>
+    </div>
+  </div>
+{% endif %}
+{% if error_message is defined %}
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card fluid error">
+        <h2>エラー</h2>
+        <p>{{ error_message }}</p>
+      </div>
+    </div>
+  </div>
+{% endif %}

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mini.css/3.0.1/mini-default.min.css">
+    <link rel="stylesheet" href="/static/common.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    {% include "header.html" %}
+
+    <h1>掲示板作成</h1>
+
+    {% include "message.html" %}
+
+    <form action="/newboard" method="POST">
+      <div class="row responsive-label">
+        <div class="col-sm-3">
+          <label for="name-text">掲示板名</label>
+        </div>
+        <div class="col-sm-9">
+          <input id="name-text" class="form-input" type="text" name="name">
+        </div>
+      </div>
+      <div class="row responsive-label">
+        <button class="default">キャンセル</button>
+        <button class="primary">作成</button>
+      </div>
+    </form>
+
+  </body>
+</html>
+

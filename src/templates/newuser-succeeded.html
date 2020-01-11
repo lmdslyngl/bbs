@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mini.css/3.0.1/mini-default.min.css">
+    <link rel="stylesheet" href="/static/common.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    {% include "header.html" %}
+
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="newuser-succeeded">
+          <h1>ようこそ{{ logined_user.name }}さん！</h1>
+          <p>さっそく掲示板を見てみましょう。</p>
+          <button class="primary">掲示板を見る</button>
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>

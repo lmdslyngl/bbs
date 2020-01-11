@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mini.css/3.0.1/mini-default.min.css">
+    <link rel="stylesheet" href="/static/common.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    {% include "header.html" %}
+    {% include "message.html" %}
+
+    {% if not logined_user is none %}
+      <div class="row">
+        <div class="col-sm-12">
+          <form>
+            <a class="button small" href="/newboard">掲示板を作成</a>
+          </form>
+        </div>
+      </div>
+    {% endif %}
+
+    <table>
+      <thead>
+        <tr>
+          <th>掲示板ID</th>
+          <th>掲示板名</th>
+          <th>作者</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for board in boards %}
+          <tr>
+            <td>{{ board[0].board_id  }}</td>
+            <td><a href="/board/{{ board[0].board_id }}">{{ board[0].name }}</a></td>
+            <td>{{ board[1].name }}</td>
+            <td>
+              {% if board[0].owner_user_id == logined_user.user_id %}
+                <form action="/board" method="POST" class="no-padding no-margin">
+                  <input type="hidden" name="action" value="delete">
+                  <input type="hidden" name="board_id" value="{{ board[0].board_id }}">
+                  <button class="small secondary no-margin">削除</button>
+                </form>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+  </body>
+</html>

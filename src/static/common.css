@@ -1,0 +1,51 @@
+
+html {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+body {
+  width: 768px;
+}
+
+textarea {
+  resize: none;
+  width: 100%;
+}
+
+.post-ctrl {
+  text-align: right;
+}
+
+.form-input {
+  width: 100%;
+}
+
+.responsive-label {
+  align-items: center;
+}
+
+.newuser-succeeded {
+  text-align: center;
+}
+
+.card.succeeded {
+  --card-back-color: limegreen;
+  --card-fore-color: white;
+  --card-border-color: limegreen;
+}
+
+form {
+  background: inherit;
+  border: none;
+  margin: inherit;
+  padding: inherit;
+}
+
+.no-padding {
+  padding: 0 !important;
+}
+.no-margin {
+  margin: 0 !important;
+}
