@@ -69,6 +69,12 @@ def new_board():
     board_name = flask.request.form["name"]
     logined_user = get_logined_user()
 
+    if len(board_name) <= 0:
+        return flask.render_template(
+            "newboard.html",
+            logined_user=get_logined_user(),
+            error_message="掲示板名を入力してください。")
+
     if BoardInfo.get_board_by_name(board_name) is not None:
         return flask.render_template(
             "newboard.html",
