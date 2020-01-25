@@ -1,9 +1,10 @@
 
 from typing import Optional
+from urllib.parse import quote
 import flask
 from model.userinfo import UserInfo
 from model.session import Session
-from .util import get_logined_user
+from .util import get_logined_user, extract_path_from_url
 
 
 module = flask.Blueprint("auth", __name__)
@@ -12,12 +13,29 @@ module = flask.Blueprint("auth", __name__)
 @module.route("/login", methods=["GET", "POST"])
 def login():
     if flask.request.method == "GET":
-        return flask.render_template("login.html")
+        return show_login()
     elif flask.request.method == "POST":
         return perform_login()
 
 
+def show_login():
+    login_url = "/login"
+    if "next" in flask.request.args:
+        # 別ドメインにリダイレクトしないように，URLのパスだけを抜き出す
+        next_url = extract_path_from_url(flask.request.args["next"])
+        if 0 < len(next_url):
+            login_url = "/login?next=" + next_url
+
+    return flask.render_template(
+        "login.html",
+        login_url=login_url)
+
+
 def perform_login():
+    if "next" in flask.request.args:
+        next_url = extract_path_from_url(flask.request.args["next"])
+    else:
+        next_url = "/board"
     username = flask.request.form["name"]
     password = flask.request.form["password"]
 
@@ -36,7 +54,7 @@ def perform_login():
             name=username,
             error_message="セッションの作成に失敗しました。")
 
-    resp = flask.redirect("/board")
+    resp = flask.redirect(next_url)
     resp.set_cookie(
         "session_id", session.session_id,
         httponly=True, expires=session.expire_at)

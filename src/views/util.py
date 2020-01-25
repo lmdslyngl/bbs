@@ -1,5 +1,6 @@
 
 from typing import Optional
+from urllib.parse import urlparse
 import flask
 from model.userinfo import UserInfo
 from model.session import Session
@@ -28,4 +29,8 @@ def get_logined_user() -> Optional[UserInfo]:
     # キャッシュにも登録しておく
     flask.g.logined_user = userinfo
     return userinfo
+
+
+def extract_path_from_url(url: str) -> str:
+    return urlparse(url).path
 
