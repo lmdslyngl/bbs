@@ -16,7 +16,7 @@
       </h1>
     </div>
 
-    {% if not logined_user is none %}
+    {% if not get_logined_user() is none %}
       <div>
         <form action="/board/{{ boardinfo['board_id'] }}" method="POST">
           <input type="hidden" name="action" value="post">

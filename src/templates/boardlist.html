@@ -9,7 +9,7 @@
     {% include "header.html" %}
     {% include "message.html" %}
 
-    {% if not logined_user is none %}
+    {% if not get_logined_user() is none %}
       <div class="row">
         <div class="col-sm-12">
           <form>
