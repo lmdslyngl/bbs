@@ -17,8 +17,11 @@ def get_logined_user() -> Optional[UserInfo]:
     except KeyError:
         return None
 
-    userinfo, session = Session.get_user_and_session_by_session_id(session_id)
+    user_and_session = Session.get_user_and_session_by_session_id(session_id)
+    if user_and_session is None:
+        return None
 
+    userinfo, session = user_and_session
     if session.is_expired():
         return None
 

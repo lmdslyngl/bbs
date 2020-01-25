@@ -1,5 +1,5 @@
 
-from typing import Tuple
+from typing import Tuple, Optional
 from datetime import datetime
 import random
 import string
@@ -59,7 +59,7 @@ class Session:
 
     @staticmethod
     def get_user_and_session_by_session_id(
-            session_id: str) -> Tuple[UserInfo, "Session"]:
+            session_id: str) -> Optional[Tuple[UserInfo, "Session"]]:
 
         sql = """
             SELECT
@@ -80,6 +80,9 @@ class Session:
                 cur.execute(sql, (session_id,))
                 row = cur.fetchone()
                 con.commit()
+
+        if row is None:
+            return None
 
         session = Session(
             row["session_id"], row["user_id"],
