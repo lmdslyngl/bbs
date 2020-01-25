@@ -2,7 +2,7 @@
 import flask
 from model.userinfo import UserInfo
 from model.boardinfo import BoardInfo
-from views.auth import get_logined_user
+from .util import get_logined_user
 
 
 module = flask.Blueprint("boardlist", __name__)

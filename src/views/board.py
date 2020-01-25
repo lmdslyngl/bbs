@@ -5,7 +5,7 @@ import flask
 from model.userinfo import UserInfo
 from model.boardinfo import BoardInfo
 from model.board import Board
-from views.auth import get_logined_user
+from .util import get_logined_user
 
 
 module = flask.Blueprint("board", __name__)

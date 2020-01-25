@@ -8,7 +8,7 @@ import views.user
 import views.auth
 import views.boardlist
 import views.board
-from views.auth import get_logined_user
+from views.util import get_logined_user
 from views.auth_deco import login_required
 
 
