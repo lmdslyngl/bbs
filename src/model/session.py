@@ -1,7 +1,7 @@
 
 from typing import Tuple, Optional
 from datetime import datetime
-import random
+import secrets
 import string
 import psycopg2
 from psycopg2.extras import DictCursor
@@ -55,7 +55,7 @@ class Session:
     @staticmethod
     def _generate_session_id() -> str:
         chars = string.ascii_letters + string.digits
-        return "".join([random.choice(chars) for _ in range(32)])
+        return "".join([secrets.choice(chars) for _ in range(32)])
 
     @staticmethod
     def get_user_and_session_by_session_id(
