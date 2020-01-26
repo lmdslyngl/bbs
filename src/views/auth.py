@@ -5,12 +5,14 @@ import flask
 from model.userinfo import UserInfo
 from model.session import Session
 from .util import get_logined_user, extract_path_from_url
+from .auth_deco import logout_required
 
 
 module = flask.Blueprint("auth", __name__)
 
 
 @module.route("/login", methods=["GET", "POST"])
+@logout_required
 def login():
     if flask.request.method == "GET":
         return show_login()

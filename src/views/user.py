@@ -4,13 +4,14 @@ import flask
 from model.userinfo import UserInfo
 from model.session import Session
 from views.auth import get_logined_user
-from .auth_deco import login_required
+from .auth_deco import login_required, logout_required
 
 
 module = flask.Blueprint("user", __name__)
 
 
 @module.route("/newuser", methods=["GET", "POST"])
+@logout_required
 def newuser():
     if flask.request.method == "GET":
         return flask.render_template("newuser.html")
