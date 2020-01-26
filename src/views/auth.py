@@ -70,10 +70,7 @@ def logout():
     except KeyError:
         pass
 
-    resp = flask.make_response(flask.render_template(
-        "login.html",
-        succeeded_message="ログアウトしました。"))
+    resp = flask.redirect("/login")
     resp.set_cookie("session_id", "", expires=0)
-
     return resp
 
