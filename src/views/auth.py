@@ -4,6 +4,7 @@ from urllib.parse import quote
 import flask
 from model.userinfo import UserInfo
 from model.session import Session
+from model.csrf_token import CSRFToken
 from .util import get_logined_user, extract_path_from_url
 from .auth_deco import logout_required
 
@@ -56,6 +57,8 @@ def perform_login():
             name=username,
             error_message="セッションの作成に失敗しました。")
 
+    CSRFToken.add_token(session.session_id)
+
     resp = flask.redirect(next_url)
     resp.set_cookie(
         "session_id", session.session_id,
@@ -68,6 +71,7 @@ def perform_login():
 def logout():
     try:
         session_id = flask.request.cookies.get("session_id")
+        CSRFToken.delete_token(session_id)
         Session.delete_session(session_id)
     except KeyError:
         pass
