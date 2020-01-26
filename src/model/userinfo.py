@@ -80,7 +80,7 @@ class UserInfo:
                 row = cur.fetchone()
                 con.commit()
 
-        return UserInfo(user_id, row[0], row[1], "")
+        return UserInfo(user_id, row[0], row[1], "", False)
 
     @staticmethod
     def find_by_name(name: str) -> "UserInfo":
