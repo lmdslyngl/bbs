@@ -4,6 +4,7 @@ import flask
 from model.userinfo import UserInfo
 from model.session import Session
 from views.auth import get_logined_user
+from .auth_deco import login_required
 
 
 module = flask.Blueprint("user", __name__)
@@ -44,6 +45,7 @@ def create_new_user():
 
 
 @module.route("/edituser", methods=["GET", "POST"])
+@login_required
 def edituser():
     logined_user = get_logined_user()
     if flask.request.method == "GET":

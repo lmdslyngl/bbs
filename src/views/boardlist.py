@@ -3,6 +3,7 @@ import flask
 from model.userinfo import UserInfo
 from model.boardinfo import BoardInfo
 from .util import get_logined_user
+from .auth_deco import login_required
 
 
 module = flask.Blueprint("boardlist", __name__)
@@ -23,6 +24,7 @@ def serve_boards():
             return delete_board()
 
 
+@login_required
 def delete_board():
     board_id = int(flask.request.form["board_id"])
 
@@ -54,6 +56,7 @@ def delete_board():
         succeeded_message="掲示板を削除しました。")
 
 
+@login_required
 @module.route("/newboard", methods=["GET", "POST"])
 def serve_newboard():
     if flask.request.method == "GET":
