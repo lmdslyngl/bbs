@@ -3,7 +3,7 @@ import flask
 from model.userinfo import UserInfo
 from model.boardinfo import BoardInfo
 from .util import get_logined_user
-from .auth_deco import login_required
+from .auth_deco import login_required, csrf_token_required
 
 
 module = flask.Blueprint("boardlist", __name__)
@@ -25,6 +25,7 @@ def serve_boards():
 
 
 @login_required
+@csrf_token_required
 def delete_board():
     board_id = int(flask.request.form["board_id"])
 
@@ -68,6 +69,7 @@ def serve_newboard():
         return new_board()
 
 
+@csrf_token_required
 def new_board():
     board_name = flask.request.form["name"]
     logined_user = get_logined_user()

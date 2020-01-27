@@ -39,6 +39,7 @@
                 <form action="/board" method="POST" class="no-padding no-margin">
                   <input type="hidden" name="action" value="delete">
                   <input type="hidden" name="board_id" value="{{ board[0].board_id }}">
+                  <input type="hidden" name="csrf-token" value="{{ get_csrf_token() }}">
                   <button class="small secondary no-margin">削除</button>
                 </form>
               {% endif %}

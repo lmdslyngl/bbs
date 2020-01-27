@@ -13,6 +13,7 @@
     {% include "message.html" %}
 
     <form action="/newboard" method="POST">
+      <input type="hidden" name="csrf-token" value="{{ get_csrf_token() }}">
       <div class="row responsive-label">
         <div class="col-sm-3">
           <label for="name-text">掲示板名</label>
