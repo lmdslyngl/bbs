@@ -20,6 +20,7 @@
       <div>
         <form action="/board/{{ boardinfo['board_id'] }}" method="POST">
           <input type="hidden" name="action" value="post">
+          <input type="hidden" name="csrf-token" value="{{ get_csrf_token() }}">
 
           <div class="row">
             <div class="col-sm-12">
@@ -36,6 +37,7 @@
         <form action="/board/{{ boardinfo['board_id'] }}" method="POST">
           <input type="hidden" name="action" value="delete">
           <input type="hidden" name="post_id" value="{{ post['post_id'] }}">
+          <input type="hidden" name="csrf-token" value="{{ get_csrf_token() }}">
 
           <div class="row">
             <div class="col-sm-12">

@@ -6,7 +6,7 @@ from model.userinfo import UserInfo
 from model.boardinfo import BoardInfo
 from model.board import Board
 from .util import get_logined_user
-from .auth_deco import login_required
+from .auth_deco import login_required, csrf_token_required
 
 
 module = flask.Blueprint("board", __name__)
@@ -55,6 +55,7 @@ def show_board(board_id: int):
 
 
 @login_required
+@csrf_token_required
 def post_board(board_id: int):
     body = flask.request.form["body"]
     if 0 < len(body):
@@ -68,6 +69,7 @@ def post_board(board_id: int):
 
 
 @login_required
+@csrf_token_required
 def delete_post(board_id: int):
     post_id = int(flask.request.form["post_id"])
 
