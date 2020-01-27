@@ -1,15 +1,16 @@
 
-from typing import Optional
+from typing import Optional, Tuple
 from urllib.parse import urlparse
 import flask
 from model.userinfo import UserInfo
 from model.session import Session
+from model.csrf_token import CSRFToken
 
 
-def get_logined_user() -> Optional[UserInfo]:
-    if "logined_user" in flask.g:
-        # キャッシュがあるならセッションから引かずにキャッシュを使う
-        return flask.g.logined_user
+def get_logined_user_and_session() -> Optional[Tuple[UserInfo, Session]]:
+    if "logined_user_and_session" in flask.g:
+        # キャッシュがあるならそれを使う
+        return flask.g.logined_user_and_session
 
     try:
         session_id = flask.request.cookies.get("session_id")
@@ -22,13 +23,41 @@ def get_logined_user() -> Optional[UserInfo]:
     if user_and_session is None:
         return None
 
-    userinfo, session = user_and_session
+    _, session = user_and_session
     if session.is_expired():
         return None
 
-    # キャッシュにも登録しておく
-    flask.g.logined_user = userinfo
-    return userinfo
+    flask.g.logined_user_and_session = user_and_session
+    return user_and_session
+
+
+def get_logined_user() -> Optional[UserInfo]:
+    logined_user_and_session = get_logined_user_and_session()
+    if logined_user_and_session is None:
+        return None
+    else:
+        return logined_user_and_session[0]
+
+
+def get_session() -> Optional[Session]:
+    logined_user_and_session = get_logined_user_and_session()
+    if logined_user_and_session is None:
+        return None
+    else:
+        return logined_user_and_session[1]
+
+
+def get_csrf_token() -> Optional[str]:
+    if "csrf_token" in flask.g:
+        return flask.g.csrf_token
+
+    session = get_session()
+    if session is None:
+        return None
+    else:
+        token = CSRFToken.get_token_by_session_id(session.session_id)
+        flask.g.csrf_token = token.token
+        return token.token
 
 
 def extract_path_from_url(url: str) -> str:
