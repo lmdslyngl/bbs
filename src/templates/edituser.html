@@ -33,6 +33,7 @@
     <h2>ユーザ名変更</h2>
     <form action="/edituser" method="POST">
       <input type="hidden" name="action" value="edit-username">
+      <input type="hidden" name="csrf-token" value="{{ get_csrf_token() }}">
 
       <div class="row responsive-label">
         <div class="col-sm-3">
@@ -53,6 +54,7 @@
     <h2>パスワード変更</h2>
     <form action="/edituser" method="POST">
       <input type="hidden" name="action" value="edit-password">
+      <input type="hidden" name="csrf-token" value="{{ get_csrf_token() }}">
 
       <div class="row responsive-label">
         <div class="col-sm-3">

@@ -4,7 +4,7 @@ import flask
 from model.userinfo import UserInfo
 from model.session import Session
 from views.auth import get_logined_user
-from .auth_deco import login_required, logout_required
+from .auth_deco import login_required, logout_required, csrf_token_required
 from .util import get_logined_user
 
 
@@ -65,6 +65,7 @@ def edituser():
                 error_message="actionが不正です。")
 
 
+@csrf_token_required
 def edit_username(logined_user: UserInfo):
     username = flask.request.form["name"]
 
@@ -93,6 +94,7 @@ def edit_username(logined_user: UserInfo):
         succeeded_message="ユーザ名を変更しました。")
 
 
+@csrf_token_required
 def edit_password(logined_user: UserInfo):
     password = flask.request.form["password"]
     password_confirm = flask.request.form["password-confirm"]
