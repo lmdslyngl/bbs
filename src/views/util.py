@@ -7,9 +7,11 @@ from model.session import Session
 from model.csrf_token import CSRFToken
 
 
-def get_logined_user_and_session() -> Optional[Tuple[UserInfo, Session]]:
-    if "logined_user_and_session" in flask.g:
-        # キャッシュがあるならそれを使う
+def get_logined_user_and_session(
+        force_reload=False) -> Optional[Tuple[UserInfo, Session]]:
+
+    if not force_reload and "logined_user_and_session" in flask.g:
+        # 強制リロードではないときにキャッシュがあるならそれを使う
         return flask.g.logined_user_and_session
 
     try:
@@ -31,16 +33,16 @@ def get_logined_user_and_session() -> Optional[Tuple[UserInfo, Session]]:
     return user_and_session
 
 
-def get_logined_user() -> Optional[UserInfo]:
-    logined_user_and_session = get_logined_user_and_session()
+def get_logined_user(force_reload=False) -> Optional[UserInfo]:
+    logined_user_and_session = get_logined_user_and_session(force_reload)
     if logined_user_and_session is None:
         return None
     else:
         return logined_user_and_session[0]
 
 
-def get_session() -> Optional[Session]:
-    logined_user_and_session = get_logined_user_and_session()
+def get_session(force_reload=False) -> Optional[Session]:
+    logined_user_and_session = get_logined_user_and_session(force_reload)
     if logined_user_and_session is None:
         return None
     else:
