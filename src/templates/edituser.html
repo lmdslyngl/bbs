@@ -30,23 +30,36 @@
       </div>
     {% endif %}
 
+    <h2>ユーザ名変更</h2>
     <form action="/edituser" method="POST">
+      <input type="hidden" name="action" value="edit-username">
+
       <div class="row responsive-label">
         <div class="col-sm-3">
           <label for="name-text">ユーザ名</label>
         </div>
         <div class="col-sm-9">
           <input id="name-text" class="form-input" type="text" name="name"
-            value="{{ logined_user.name }}">
+            value="{{ get_logined_user().name }}">
         </div>
       </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <button type="submit" class="primary">設定</button>
+        </div>
+      </div>
+    </form>
+
+    <h2>パスワード変更</h2>
+    <form action="/edituser" method="POST">
+      <input type="hidden" name="action" value="edit-password">
+
       <div class="row responsive-label">
         <div class="col-sm-3">
           <label for="password-text">パスワード</label>
         </div>
         <div class="col-sm-9">
-          <input id="password-text" class="form-input" type="password" name="password"
-            placeholder="パスワードを変更するときのみ入力してください。">
+          <input id="password-text" class="form-input" type="password" name="password">
         </div>
       </div>
       <div class="row responsive-label">
@@ -54,8 +67,7 @@
           <label for="password-confirm-text">パスワード（確認）</label>
         </div>
         <div class="col-sm-9">
-          <input id="password-confirm-text" class="form-input" type="password" name="password-confirm"
-            placeholder="パスワードを変更するときのみ入力してください。">
+          <input id="password-confirm-text" class="form-input" type="password" name="password-confirm">
         </div>
       </div>
       <div class="row">
