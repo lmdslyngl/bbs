@@ -49,3 +49,7 @@ form {
 .no-margin {
   margin: 0 !important;
 }
+
+.pager {
+  text-align: center;
+}
