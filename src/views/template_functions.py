@@ -7,7 +7,7 @@ from .util import get_logined_user, get_csrf_token
 def get_url(with_args=True) -> str:
     parsed_url = urlparse(flask.request.url)
     if with_args:
-        return parsed_url.path + parsed_url.query
+        return parsed_url.path + "?" + parsed_url.query
     else:
         return parsed_url.path
 
