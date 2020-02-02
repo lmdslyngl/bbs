@@ -15,12 +15,7 @@ module = flask.Blueprint("board", __name__)
 @module.route("/board/<board_id>", methods=["GET", "POST"])
 def board(board_id: int):
     if flask.request.method == "GET":
-        if "older_until_id" in flask.request.args:
-            return show_board_with_until_id(board_id)
-        elif "newer_since_id" in flask.request.args:
-            return show_board_with_since_id(board_id)
-        else:
-            return show_board(board_id)
+        return show_board(board_id)
 
     elif flask.request.method == "POST":
         action = flask.request.form["action"]
@@ -33,76 +28,21 @@ def board(board_id: int):
 def show_board(board_id: int):
     logined_user = get_logined_user()
 
-    board = BoardInfo.get_board(board_id)
-    posts = Board.get_post_by_board_id_older(board_id, count=2)
+    if "older_until_id" in flask.request.args:
+        older_until_id = flask.request.args["older_until_id"]
+        posts = Board.get_post_by_board_id_older(
+            board_id, older_until_id, count=2)
 
-    posts_for_tempalte = []
-    board_info_for_tempalte = {
-        "name": board.name,
-        "board_id": board.board_id,
-        "created_at": datetime2str(board.created_at),
-    }
+    elif "newer_since_id" in flask.request.args:
+        newer_since_id = flask.request.args["newer_since_id"]
+        posts = Board.get_post_by_board_id_newer(
+            board_id, newer_since_id, count=2)
 
-    for (board, user_info) in posts.posts:
-        posts_for_tempalte.append({
-            "post_id": board.post_id,
-            "author_name": user_info.name,
-            "author_user_id": user_info.user_id,
-            "created_at": datetime2str(board.created_at),
-            "body": board.body
-        })
-
-    return flask.render_template(
-        "board_template.html",
-        logined_user=logined_user,
-        boardinfo=board_info_for_tempalte,
-        posts=posts_for_tempalte,
-        has_older=posts.has_older,
-        older_until_id=posts.older_until_id,
-        has_newer=posts.has_newer,
-        newer_since_id=posts.newer_since_id)
-
-
-def show_board_with_until_id(board_id: int):
-    logined_user = get_logined_user()
-    older_until_id = flask.request.args["older_until_id"]
+    else:
+        # 何も指定されていないときは最新の投稿から取得
+        posts = Board.get_post_by_board_id(board_id, count=2)
 
     board = BoardInfo.get_board(board_id)
-    posts = Board.get_post_by_board_id_older(board_id, older_until_id, count=2)
-
-    posts_for_tempalte = []
-    board_info_for_tempalte = {
-        "name": board.name,
-        "board_id": board.board_id,
-        "created_at": datetime2str(board.created_at),
-    }
-
-    for (board, user_info) in posts.posts:
-        posts_for_tempalte.append({
-            "post_id": board.post_id,
-            "author_name": user_info.name,
-            "author_user_id": user_info.user_id,
-            "created_at": datetime2str(board.created_at),
-            "body": board.body
-        })
-
-    return flask.render_template(
-        "board_template.html",
-        logined_user=logined_user,
-        boardinfo=board_info_for_tempalte,
-        posts=posts_for_tempalte,
-        has_older=posts.has_older,
-        older_until_id=posts.older_until_id,
-        has_newer=posts.has_newer,
-        newer_since_id=posts.newer_since_id)
-
-
-def show_board_with_since_id(board_id: int):
-    logined_user = get_logined_user()
-    newer_since_id = flask.request.args["newer_since_id"]
-
-    board = BoardInfo.get_board(board_id)
-    posts = Board.get_post_by_board_id_newer(board_id, newer_since_id, count=2)
 
     posts_for_tempalte = []
     board_info_for_tempalte = {
