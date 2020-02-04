@@ -35,7 +35,7 @@
             <td><a href="/board/{{ board[0].board_id }}">{{ board[0].name }}</a></td>
             <td>{{ board[1].name }}</td>
             <td>
-              {% if board[0].owner_user_id == logined_user.user_id %}
+              {% if board[0].owner_user_id == get_logined_user().user_id %}
                 <form action="/board" method="POST" class="no-padding no-margin">
                   <input type="hidden" name="action" value="delete">
                   <input type="hidden" name="board_id" value="{{ board[0].board_id }}">
@@ -48,6 +48,16 @@
         {% endfor %}
       </tbody>
     </table>
+
+    <div class="pager">
+      {% if has_newer %}
+        <a href="{{ get_url(with_args=False) }}" class="button">最初へ</a>
+        <a href="{{ get_url(with_args=False) }}?newer_since_id={{ newer_since_id }}" class="button">前へ</a>
+      {% endif %}
+      {% if has_older %}
+        <a href="{{ get_url(with_args=False) }}?older_until_id={{ older_until_id }}" class="button">次へ</a>
+      {% endif %}
+    </div>
 
   </body>
 </html>

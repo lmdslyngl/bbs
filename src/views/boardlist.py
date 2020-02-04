@@ -13,15 +13,34 @@ module = flask.Blueprint("boardlist", __name__)
 def serve_boards():
 
     if flask.request.method == "GET":
-        return flask.render_template(
-            "boardlist.html",
-            boards=BoardInfo.get_boards(),
-            logined_user=get_logined_user())
+        return show_boards()
 
     elif flask.request.method == "POST":
         action = flask.request.form["action"]
         if action == "delete":
             return delete_board()
+
+
+def show_boards():
+    if "older_until_id" in flask.request.args:
+        older_until_id = flask.request.args["older_until_id"]
+        boards = BoardInfo.get_boards_older(older_until_id, count=2)
+
+    elif "newer_since_id" in flask.request.args:
+        newer_since_id = flask.request.args["newer_since_id"]
+        boards = BoardInfo.get_boards_newer(newer_since_id, count=2)
+
+    else:
+        # 何も指定されていないときは最新の掲示板から取得
+        boards = BoardInfo.get_boards(count=2)
+
+    return flask.render_template(
+        "boardlist.html",
+        boards=boards.boards,
+        has_older=boards.has_older,
+        older_until_id=boards.older_until_id,
+        has_newer=boards.has_newer,
+        newer_since_id=boards.newer_since_id)
 
 
 @login_required
