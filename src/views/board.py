@@ -31,16 +31,16 @@ def show_board(board_id: int):
     if "older_until_id" in flask.request.args:
         older_until_id = flask.request.args["older_until_id"]
         posts = Board.get_post_by_board_id_older(
-            board_id, older_until_id, count=2)
+            board_id, older_until_id, count=20)
 
     elif "newer_since_id" in flask.request.args:
         newer_since_id = flask.request.args["newer_since_id"]
         posts = Board.get_post_by_board_id_newer(
-            board_id, newer_since_id, count=2)
+            board_id, newer_since_id, count=20)
 
     else:
         # 何も指定されていないときは最新の投稿から取得
-        posts = Board.get_post_by_board_id(board_id, count=2)
+        posts = Board.get_post_by_board_id(board_id, count=20)
 
     board = BoardInfo.get_board(board_id)
 

@@ -24,15 +24,15 @@ def serve_boards():
 def show_boards():
     if "older_until_id" in flask.request.args:
         older_until_id = flask.request.args["older_until_id"]
-        boards = BoardInfo.get_boards_older(older_until_id, count=2)
+        boards = BoardInfo.get_boards_older(older_until_id, count=20)
 
     elif "newer_since_id" in flask.request.args:
         newer_since_id = flask.request.args["newer_since_id"]
-        boards = BoardInfo.get_boards_newer(newer_since_id, count=2)
+        boards = BoardInfo.get_boards_newer(newer_since_id, count=20)
 
     else:
         # 何も指定されていないときは最新の掲示板から取得
-        boards = BoardInfo.get_boards(count=2)
+        boards = BoardInfo.get_boards(count=20)
 
     return flask.render_template(
         "boardlist.html",
