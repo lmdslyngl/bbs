@@ -1,7 +1,7 @@
 
 from urllib.parse import urlparse
 import flask
-from .util import get_logined_user, get_csrf_token
+from .util import get_logined_user, get_csrf_token, datetime2str
 
 
 def get_url(with_args=True) -> str:
@@ -16,5 +16,6 @@ def register_template_functions(app: flask.Flask) -> None:
     app.jinja_env.globals.update({
         "get_url": get_url,
         "get_logined_user": get_logined_user,
-        "get_csrf_token": get_csrf_token
+        "get_csrf_token": get_csrf_token,
+        "datetime2str": datetime2str
     })

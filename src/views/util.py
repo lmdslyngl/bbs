@@ -1,6 +1,7 @@
 
 from typing import Optional, Tuple
 from urllib.parse import urlparse
+from datetime import datetime
 import flask
 from model.userinfo import UserInfo
 from model.session import Session
@@ -65,3 +66,6 @@ def get_csrf_token() -> Optional[str]:
 def extract_path_from_url(url: str) -> str:
     return urlparse(url).path
 
+
+def datetime2str(source: datetime) -> str:
+    return source.strftime("%Y-%m-%d %H:%M:%S")

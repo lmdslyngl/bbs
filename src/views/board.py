@@ -5,7 +5,7 @@ import flask
 from model.userinfo import UserInfo
 from model.boardinfo import BoardInfo
 from model.board import Board
-from .util import get_logined_user
+from .util import get_logined_user, datetime2str
 from .auth_deco import login_required, csrf_token_required
 import conf
 
@@ -111,6 +111,3 @@ def delete_post(board_id: int):
     Board.delete_post(board_id, post_id)
     return show_board(board_id)
 
-
-def datetime2str(source: datetime) -> str:
-    return source.strftime("%Y-%m-%d %H:%M:%S")
