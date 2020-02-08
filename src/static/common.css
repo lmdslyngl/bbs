@@ -53,3 +53,7 @@ form {
 .pager {
   text-align: center;
 }
+
+.card-footer {
+  text-align: right;
+}

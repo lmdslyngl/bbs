@@ -20,23 +20,23 @@
     {% endif %}
 
     {% for board in boards %}
-      <div class="card fluid"><form>
-        <h3><a href="/board/{{ board[0].board_id }}">
-          [No.{{ board[0].board_id  }}] {{ board[0].name }}
-        </a></h3>
-        <p>
-          作成日時: {{ board[0].created_at }},
-          作成者: {{ board[1].name }}
-        </p>
-        <div class="post-ctrl">
-          {% if board[0].owner_user_id == get_logined_user().user_id %}
-            <input type="hidden" name="action" value="delete">
-            <input type="hidden" name="board_id" value="{{ board[0].board_id }}">
-            <input type="hidden" name="csrf-token" value="{{ get_csrf_token() }}">
-            <button class="small no-margin">削除</button>
-          {% endif %}
-        </div>
-      </form></div>
+      <div class="card fluid">
+        <form action="/board" method="POST">
+          <h3><a href="/board/{{ board[0].board_id }}">
+            [No.{{ board[0].board_id  }}] {{ board[0].name }}
+          </a></h3>
+          <div class="card-footer">
+            作成日時: {{ board[0].created_at }} |
+            作成者: {{ board[1].name }}
+            {% if board[0].owner_user_id == get_logined_user().user_id %}
+              <input type="hidden" name="action" value="delete">
+              <input type="hidden" name="board_id" value="{{ board[0].board_id }}">
+              <input type="hidden" name="csrf-token" value="{{ get_csrf_token() }}">
+              <button class="small no-margin">削除</button>
+            {% endif %}
+          </div>
+        </form>
+      </div>
     {% endfor %}
 
     <div class="pager">

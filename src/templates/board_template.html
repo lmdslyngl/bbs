@@ -12,7 +12,7 @@
     <div>
       <h1>
         {{ boardinfo["name"] }}
-        <small>作成日: {{ boardinfo["created_at"] }}</small>
+        <!-- <small>作成日: {{ boardinfo["created_at"] }}</small> -->
       </h1>
     </div>
 
@@ -33,31 +33,33 @@
     {% endif %}
 
     <div class="board">
-      {% for post in posts %}
-        <form action="{{ get_url() }}" method="POST">
-          <input type="hidden" name="action" value="delete">
-          <input type="hidden" name="post_id" value="{{ post['post_id'] }}">
-          <input type="hidden" name="csrf-token" value="{{ get_csrf_token() }}">
+      {% if posts|length <= 0 %}
+        <div class="card fluid warning">
+          <h3>まだ投稿がありません。</h3>
+        </div>
+      {% endif %}
 
-          <div class="row">
-            <div class="col-sm-12">
-              <div class="card fluid">
-                <h3>
-                  {{ post["author_name"] }}
-                  <small>投稿日時: {{ post["created_at"] }}</small>
-                </h3>
-                <p>
-                  {{ post["body"]|safe }}
-                </p>
-                {% if post["author_user_id"] == logined_user.user_id %}
-                  <div class="post-ctrl">
-                    <button class="small">削除</button>
-                  </div>
-                {% endif %}
-              </div>
+      {% for post in posts %}
+        <div class="card fluid">
+          <form action="{{ get_url() }}" method="POST">
+            <input type="hidden" name="action" value="delete">
+            <input type="hidden" name="post_id" value="{{ post['post_id'] }}">
+            <input type="hidden" name="csrf-token" value="{{ get_csrf_token() }}">
+
+            <p>
+              {{ post["body"]|safe }}
+            </p>
+
+            <div class="card-footer">
+              投稿者: {{ post["author_name"] }} |
+              投稿日時: {{ post["created_at"] }}
+              {% if post["author_user_id"] == logined_user.user_id %}
+                <button class="small no-margin">削除</button>
+              {% endif %}
             </div>
-          </div>
-        </form>
+            </div>
+          </form>
+        </div>
       {% endfor %}
 
     </div>
