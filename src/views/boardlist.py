@@ -4,6 +4,7 @@ from model.userinfo import UserInfo
 from model.boardinfo import BoardInfo
 from .util import get_logined_user
 from .auth_deco import login_required, csrf_token_required
+import conf
 
 
 module = flask.Blueprint("boardlist", __name__)
@@ -24,15 +25,17 @@ def serve_boards():
 def show_boards():
     if "older_until_id" in flask.request.args:
         older_until_id = flask.request.args["older_until_id"]
-        boards = BoardInfo.get_boards_older(older_until_id, count=20)
+        boards = BoardInfo.get_boards_older(
+            older_until_id, count=conf.boardlist_boards_per_page)
 
     elif "newer_since_id" in flask.request.args:
         newer_since_id = flask.request.args["newer_since_id"]
-        boards = BoardInfo.get_boards_newer(newer_since_id, count=20)
+        boards = BoardInfo.get_boards_newer(
+            newer_since_id, count=conf.boardlist_boards_per_page)
 
     else:
         # 何も指定されていないときは最新の掲示板から取得
-        boards = BoardInfo.get_boards(count=20)
+        boards = BoardInfo.get_boards(count=conf.boardlist_boards_per_page)
 
     return flask.render_template(
         "boardlist.html",

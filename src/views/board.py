@@ -7,6 +7,7 @@ from model.boardinfo import BoardInfo
 from model.board import Board
 from .util import get_logined_user
 from .auth_deco import login_required, csrf_token_required
+import conf
 
 
 module = flask.Blueprint("board", __name__)
@@ -31,16 +32,19 @@ def show_board(board_id: int):
     if "older_until_id" in flask.request.args:
         older_until_id = flask.request.args["older_until_id"]
         posts = Board.get_post_by_board_id_older(
-            board_id, older_until_id, count=20)
+            board_id, older_until_id,
+            count=conf.board_posts_per_page)
 
     elif "newer_since_id" in flask.request.args:
         newer_since_id = flask.request.args["newer_since_id"]
         posts = Board.get_post_by_board_id_newer(
-            board_id, newer_since_id, count=20)
+            board_id, newer_since_id,
+            count=conf.board_posts_per_page)
 
     else:
         # 何も指定されていないときは最新の投稿から取得
-        posts = Board.get_post_by_board_id(board_id, count=20)
+        posts = Board.get_post_by_board_id(
+            board_id, count=conf.board_posts_per_page)
 
     board = BoardInfo.get_board(board_id)
 
