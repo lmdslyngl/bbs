@@ -3,6 +3,7 @@ from typing import Optional
 import flask
 from model.userinfo import UserInfo
 from model.session import Session
+from model.csrf_token import CSRFToken
 from views.auth import get_logined_user
 from .auth_deco import login_required, logout_required, csrf_token_required
 from .util import get_logined_user
@@ -25,11 +26,17 @@ def create_new_user():
     password = flask.request.form["password"]
     password_confirm = flask.request.form["password-confirm"]
 
-    error_msg = check_auth_criteria(username, password, password_confirm)
-    if error_msg is not None:
+    username_check_result = check_username_criteria(username)
+    if username_check_result is not None:
         return flask.render_template(
             "newuser.html",
-            name=username, error_message=error_msg)
+            name=username, error_message=username_check_result)
+
+    password_check_result = check_password_criteria(password, password_confirm)
+    if password_check_result is not None:
+        return flask.render_template(
+            "newuser.html",
+            name=username, error_message=password_check_result)
 
     added_user = UserInfo.add_user(username, password)
 
@@ -40,9 +47,15 @@ def create_new_user():
             name=username,
             error_message="セッションの作成に失敗しました。")
 
+    CSRFToken.add_token(session.session_id)
+
     resp = flask.make_response(
-        flask.render_template("newuser-succeeded.html", logined_user=added_user))
-    resp.set_cookie("session_id", session.session_id)
+        flask.render_template("newuser-succeeded.html",
+            added_user=added_user))
+    resp.set_cookie(
+        "session_id", session.session_id,
+        httponly=True, expires=session.expire_at)
+
     return resp
 
 
@@ -74,15 +87,11 @@ def edit_username(logined_user: UserInfo):
             "edituser.html",
             succeeded_message="ユーザ名に変更はありませんでした。")
 
-    if len(username) < 4:
+    check_result = check_username_criteria(username)
+    if check_result is not None:
         return flask.render_template(
             "edituser.html",
-            error_message="ユーザ名は4文字以上である必要があります。")
-
-    if UserInfo.find_by_name(username) is not None:
-        return flask.render_template(
-            "edituser.html",
-            error_message="ユーザ: \"{}\"はすでに存在します".format(username))
+            error_message=check_result)
 
     UserInfo.update_user(logined_user.user_id, username, None)
 
@@ -99,18 +108,35 @@ def edit_password(logined_user: UserInfo):
     password = flask.request.form["password"]
     password_confirm = flask.request.form["password-confirm"]
 
-    if len(password) < 8:
+    check_result = check_password_criteria(password, password_confirm)
+    if check_result is not None:
         return flask.render_template(
             "edituser.html",
-            error_message="パスワードは8文字以上である必要があります。")
-
-    if password != password_confirm:
-        return flask.render_template(
-            "edituser.html",
-            error_message="パスワード（確認）が一致しません。")
+            error_message=check_result)
 
     UserInfo.update_user(logined_user.user_id, None, password)
 
     return flask.render_template(
         "edituser.html",
         succeeded_message="パスワードを変更しました。")
+
+
+def check_username_criteria(username: str) -> Optional[str]:
+    if len(username) < 4:
+        return "ユーザ名は4文字以上である必要があります。"
+
+    if UserInfo.find_by_name(username) is not None:
+        return "ユーザ: \"{}\"はすでに存在します".format(username)
+
+    return None
+
+
+def check_password_criteria(password: str, password_confirm: str) -> Optional[str]:
+    if len(password) < 8:
+        return "パスワードは8文字以上である必要があります。"
+
+    if password != password_confirm:
+        return "パスワード（確認）が一致しません。"
+
+    return None
+
