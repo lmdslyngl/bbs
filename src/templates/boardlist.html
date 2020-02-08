@@ -21,7 +21,7 @@
 
     {% for board in boards %}
       <div class="card fluid">
-        <form action="/board" method="POST">
+        <form action="{{ get_url() }}" method="POST">
           <h3><a href="/board/{{ board[0].board_id }}">
             [No.{{ board[0].board_id  }}] {{ board[0].name }}
           </a></h3>
