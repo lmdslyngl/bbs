@@ -33,7 +33,7 @@
 
     <form action="{{ login_url }}" method="POST">
       <div class="row responsive-label">
-        <div class="col-sm-3">
+        <div class="col-sm-3 form-label">
           <label for="name-text">ユーザ名</label>
         </div>
         {% if name is defined %}
@@ -47,7 +47,7 @@
         {% endif %}
       </div>
       <div class="row responsive-label">
-        <div class="col-sm-3">
+        <div class="col-sm-3 form-label">
           <label for="password-text">パスワード</label>
         </div>
         <div class="col-sm-9">
@@ -55,7 +55,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-12 form-button">
           <button class="primary">ログイン</button>
         </div>
       </div>

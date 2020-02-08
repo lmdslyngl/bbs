@@ -8,8 +8,6 @@
   <body>
     {% include "header.html" %}
 
-    <h1>ユーザ編集</h1>
-
     {% if succeeded_message is defined %}
       <div class="row">
         <div class="col-sm-12">
@@ -30,13 +28,13 @@
       </div>
     {% endif %}
 
-    <h2>ユーザ名変更</h2>
+    <h1>ユーザ名変更</h1>
     <form action="/edituser" method="POST">
       <input type="hidden" name="action" value="edit-username">
       <input type="hidden" name="csrf-token" value="{{ get_csrf_token() }}">
 
       <div class="row responsive-label">
-        <div class="col-sm-3">
+        <div class="col-sm-3 form-label">
           <label for="name-text">ユーザ名</label>
         </div>
         <div class="col-sm-9">
@@ -45,19 +43,19 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-12 form-button">
           <button type="submit" class="primary">設定</button>
         </div>
       </div>
     </form>
 
-    <h2>パスワード変更</h2>
+    <h1>パスワード変更</h1>
     <form action="/edituser" method="POST">
       <input type="hidden" name="action" value="edit-password">
       <input type="hidden" name="csrf-token" value="{{ get_csrf_token() }}">
 
       <div class="row responsive-label">
-        <div class="col-sm-3">
+        <div class="col-sm-3 form-label">
           <label for="password-text">パスワード</label>
         </div>
         <div class="col-sm-9">
@@ -65,7 +63,7 @@
         </div>
       </div>
       <div class="row responsive-label">
-        <div class="col-sm-3">
+        <div class="col-sm-3 form-label">
           <label for="password-confirm-text">パスワード（確認）</label>
         </div>
         <div class="col-sm-9">
@@ -73,7 +71,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-12 form-button">
           <button type="submit" class="primary">設定</button>
         </div>
       </div>

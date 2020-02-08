@@ -43,6 +43,14 @@ form {
   padding: inherit;
 }
 
+.form-label {
+  text-align: right;
+}
+
+.form-button {
+  text-align: right;
+}
+
 .no-padding {
   padding: 0 !important;
 }
