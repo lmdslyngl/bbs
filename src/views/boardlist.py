@@ -69,11 +69,7 @@ def delete_board():
 
     BoardInfo.delete_board(board_id)
 
-    return flask.render_template(
-        "boardlist.html",
-        boards=BoardInfo.get_boards(),
-        logined_user=get_logined_user(),
-        succeeded_message="掲示板を削除しました。")
+    return show_boards()
 
 
 @login_required
