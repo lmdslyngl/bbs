@@ -133,6 +133,34 @@ class UserInfo:
             return None
 
     @staticmethod
+    def check_password_by_user_id(user_id: int, password: str) -> Optional["UserInfo"]:
+        sql = """
+            SELECT
+                name,
+                created_at,
+                password_hash
+            FROM userinfo
+            WHERE user_id = %s AND deleted = false
+        """
+
+        with get_connection() as con:
+            with con.cursor() as cur:
+                cur.execute(sql, (user_id,))
+                row = cur.fetchone()
+                con.commit()
+
+        if row is None:
+            return None
+
+        user_password_hash = row[2]
+        if bcrypt.checkpw(
+                password.encode("ascii"),
+                user_password_hash.encode("ascii")):
+            return UserInfo(user_id, row[0], row[1], "", False)
+        else:
+            return None
+
+    @staticmethod
     def delete_user(user_id: str) -> None:
         sql = """
             UPDATE userinfo SET deleted = true WHERE user_id = %s
