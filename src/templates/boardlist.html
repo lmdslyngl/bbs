@@ -19,6 +19,12 @@
       </div>
     {% endif %}
 
+    {% if boards|length <= 0 %}
+      <div class="card fluid warning">
+        <h3>まだ掲示板がありません。</h3>
+      </div>
+    {% endif %}
+
     {% for board in boards %}
       {% set boardinfo, post = board %}
       <div class="card fluid">
