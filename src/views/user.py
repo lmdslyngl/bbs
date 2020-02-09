@@ -5,14 +5,18 @@ from model.userinfo import UserInfo
 from model.session import Session
 from model.csrf_token import CSRFToken
 from views.auth import get_logined_user
-from .auth_deco import login_required, logout_required, csrf_token_required
+from .auth_deco import \
+    login_required, logout_required, \
+    csrf_token_required, enable_feature_by_flag
 from .util import get_logined_user, get_session
+import conf
 
 
 module = flask.Blueprint("user", __name__)
 
 
 @module.route("/newuser", methods=["GET", "POST"])
+@enable_feature_by_flag(conf.allow_create_user)
 @logout_required
 def newuser():
     if flask.request.method == "GET":
@@ -142,6 +146,8 @@ def check_password_criteria(password: str, password_confirm: str) -> Optional[st
 
 
 @module.route("/deleteuser", methods=["GET", "POST"])
+@enable_feature_by_flag(conf.allow_delete_user)
+@login_required
 def deleteuser():
     if flask.request.method == "GET":
         return flask.render_template("deleteuser.html")
