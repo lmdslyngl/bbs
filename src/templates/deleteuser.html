@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mini.css/3.0.1/mini-default.min.css">
+    <link rel="stylesheet" href="/static/common.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    {% include "header.html" %}
+
+    {% if error_message is defined %}
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="card fluid error">
+            <h2>エラー</h2>
+            <p>{{ error_message }}</p>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    <h1>ユーザを削除する</h1>
+    <form action="/deleteuser" method="POST">
+      <input type="hidden" name="csrf-token" value="{{ get_csrf_token() }}">
+      <div class="row responsive-label">
+        <div class="col-sm-3 form-label">
+          <label for="password-text">現在のパスワード</label>
+        </div>
+        <div class="col-sm-9">
+          <input id="password-text" class="form-input" type="password" name="password">
+        </div>
+      </div>
+      <div class="row responsive-label">
+        <div class="col-sm-3 form-label">
+          <input type="checkbox" name="agree" id="agree-check">
+        </div>
+        <div class="col-sm-9">
+          <label for="agree-check">ユーザを一度削除すると元には戻せないことに同意します。</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 form-button">
+          <button type="submit" class="secondary">ユーザ削除</button>
+        </div>
+      </div>
+    </form>
+
+
+  </body>
+</html>

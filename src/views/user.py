@@ -6,7 +6,7 @@ from model.session import Session
 from model.csrf_token import CSRFToken
 from views.auth import get_logined_user
 from .auth_deco import login_required, logout_required, csrf_token_required
-from .util import get_logined_user
+from .util import get_logined_user, get_session
 
 
 module = flask.Blueprint("user", __name__)
@@ -140,3 +140,37 @@ def check_password_criteria(password: str, password_confirm: str) -> Optional[st
 
     return None
 
+
+@module.route("/deleteuser", methods=["GET", "POST"])
+def deleteuser():
+    if flask.request.method == "GET":
+        return flask.render_template("deleteuser.html")
+    elif flask.request.method == "POST":
+        return perform_delete_user()
+
+
+@csrf_token_required
+def perform_delete_user():
+    password = flask.request.form["password"]
+    agree_check = "agree" in flask.request.form
+
+    if not agree_check:
+        return flask.render_template(
+            "deleteuser.html",
+            error_message="同意のチェックボックスにチェックを入れてください。")
+
+    logined_user = get_logined_user()
+    if UserInfo.check_password_by_user_id(logined_user.user_id , password) is None:
+        return flask.render_template(
+            "deleteuser.html",
+            error_message="パスワードが正しくありません。")
+
+    session = get_session()
+    CSRFToken.delete_token(session.session_id)
+    Session.delete_session(session.session_id)
+
+    UserInfo.delete_user(logined_user.user_id)
+
+    resp = flask.redirect("/login")
+    resp.set_cookie("session_id", "", expires=0)
+    return resp
