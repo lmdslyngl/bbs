@@ -47,3 +47,15 @@ def csrf_token_required(func):
 
     return wrapper
 
+
+def enable_feature_by_flag(enabled):
+    def wrapper_outer(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            if not enabled:
+                return flask.render_template(
+                    "error.html",
+                    error_message="この機能は無効にされています。")
+            return func(*args, **kwargs)
+        return wrapper
+    return wrapper_outer

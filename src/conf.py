@@ -11,3 +11,9 @@ boardlist_boards_per_page = 20
 
 # 掲示板の1ページあたりの投稿数
 board_posts_per_page = 20
+
+# ユーザ作成の許可
+allow_create_user = True
+
+# ユーザ削除の許可
+allow_delete_user = True
