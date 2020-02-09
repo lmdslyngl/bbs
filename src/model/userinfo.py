@@ -139,7 +139,6 @@ class UserInfo:
         """
         with get_connection() as con:
             with con.cursor() as cur:
-                cur.execute(sql, (name,))
-                row = cur.fetchone()
+                cur.execute(sql, (user_id,))
                 con.commit()
 
