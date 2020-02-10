@@ -9,6 +9,7 @@ from .auth_deco import \
     login_required, logout_required, \
     csrf_token_required, enable_feature_by_flag
 from .util import get_logined_user, get_session
+from util import get_current_logger
 import conf
 
 
@@ -60,6 +61,9 @@ def create_new_user():
         "session_id", session.session_id,
         httponly=True, expires=session.expire_at)
 
+    get_current_logger().info(
+        "Created user: user_id={}".format(added_user.user_id))
+
     return resp
 
 
@@ -102,6 +106,9 @@ def edit_username(logined_user: UserInfo):
     # ユーザ名の変更を反映するためにユーザを強制取得
     get_logined_user(force_reload=True)
 
+    get_current_logger().info(
+        "Edited username: user_id={}".format(logined_user.user_id))
+
     return flask.render_template(
         "edituser.html",
         succeeded_message="ユーザ名を変更しました。")
@@ -119,6 +126,9 @@ def edit_password(logined_user: UserInfo):
             error_message=check_result)
 
     UserInfo.update_user(logined_user.user_id, None, password)
+
+    get_current_logger().info(
+        "Edited password: user_id={}".format(logined_user.user_id))
 
     return flask.render_template(
         "edituser.html",
@@ -179,4 +189,8 @@ def perform_delete_user():
 
     resp = flask.redirect("/login")
     resp.set_cookie("session_id", "", expires=0)
+
+    get_current_logger().info(
+        "Deleted user: user_id={}".format(logined_user.user_id))
+
     return resp
