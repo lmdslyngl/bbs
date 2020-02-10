@@ -11,12 +11,14 @@ import views.board
 from views.util import get_logined_user
 from views.auth_deco import login_required
 from views.template_functions import register_template_functions
+from util import init_root_logger
 
 
 app = flask.Flask(__name__, static_url_path="/static")
 
 
 if __name__ == "__main__":
+    init_root_logger()
     register_template_functions(app)
 
     app.register_blueprint(views.board.module)
