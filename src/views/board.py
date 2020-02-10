@@ -7,6 +7,7 @@ from model.boardinfo import BoardInfo
 from model.board import Board
 from .util import get_logined_user, datetime2str
 from .auth_deco import login_required, csrf_token_required
+from util import get_current_logger
 import conf
 
 
@@ -84,7 +85,11 @@ def post_board(board_id: int):
         author_user_id = logined_user.user_id
 
         body = html.escape(body).replace("\n", "<br>")
-        Board.add_post(board_id, body, author_user_id)
+        added_post = Board.add_post(board_id, body, author_user_id)
+
+    get_current_logger().info(
+        "Posted: user_id={}, post_id={}".format(
+            logined_user.user_id, added_post.post_id))
 
     return show_board(board_id)
 
@@ -109,5 +114,10 @@ def delete_post(board_id: int):
                     logined_user.user_id, post.author_user_id))
 
     Board.delete_post(board_id, post_id)
+
+    get_current_logger().info(
+        "Deleted post: user_id={}, post_id={}".format(
+            logined_user.user_id, post_id))
+
     return show_board(board_id)
 

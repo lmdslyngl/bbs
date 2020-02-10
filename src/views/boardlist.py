@@ -4,6 +4,7 @@ from model.userinfo import UserInfo
 from model.boardinfo import BoardInfo
 from .util import get_logined_user
 from .auth_deco import login_required, csrf_token_required
+from util import get_current_logger
 import conf
 
 
@@ -72,6 +73,10 @@ def delete_board():
 
     BoardInfo.delete_board(board_id)
 
+    get_current_logger().info(
+        "Deleted board: user_id={}, board_id={}".format(
+            logined_user.user_id, board_id))
+
     return show_boards()
 
 
@@ -105,4 +110,9 @@ def new_board():
             error_message="同名の掲示板が存在しています。")
 
     added_board = BoardInfo.add_board(board_name, logined_user.user_id)
+
+    get_current_logger().info(
+        "Created board: user_id={}, board_id={}".format(
+            logined_user.user_id, added_board.board_id))
+
     return flask.redirect("/board/{}".format(added_board.board_id))
