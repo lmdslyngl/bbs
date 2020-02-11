@@ -6,7 +6,7 @@ import inspect
 import conf
 
 
-def init_root_logger() -> logging.Logger:
+def init_root_logger() -> None:
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
 
