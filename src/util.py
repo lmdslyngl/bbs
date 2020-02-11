@@ -14,15 +14,15 @@ def init_root_logger() -> logging.Logger:
         "[%(asctime)s] %(levelname)s in %(module)s: %(message)s")
 
     handler_stderr = StreamHandler()
-    handler_syslog = SysLogHandler(
-        address=(conf.syslog_host, conf.syslog_port),
-        facility=SysLogHandler.LOG_USER)
-
     handler_stderr.setFormatter(formatter)
-    handler_syslog.setFormatter(formatter)
-
     logger.addHandler(handler_stderr)
-    logger.addHandler(handler_syslog)
+
+    if conf.syslog_enabled:
+        handler_syslog = SysLogHandler(
+            address=(conf.syslog_host, conf.syslog_port),
+            facility=SysLogHandler.LOG_USER)
+        handler_syslog.setFormatter(formatter)
+        logger.addHandler(handler_syslog)
 
 
 def get_current_logger() -> logging.Logger:

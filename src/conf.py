@@ -7,6 +7,7 @@ db_name = "bbsdb2"
 db_max_pool_connections = 20
 
 # syslog系設定
+syslog_enabled = True
 syslog_host = "127.0.0.1"
 syslog_port = 514
 
