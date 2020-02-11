@@ -3,6 +3,7 @@ import logging
 from logging import StreamHandler
 from logging.handlers import SysLogHandler
 import inspect
+import conf
 
 
 def init_root_logger() -> logging.Logger:
@@ -14,8 +15,8 @@ def init_root_logger() -> logging.Logger:
 
     handler_stderr = StreamHandler()
     handler_syslog = SysLogHandler(
-        address=("127.0.0.1", 514),
-        facility=logging.handlers.SysLogHandler.LOG_USER)
+        address=(conf.syslog_host, conf.syslog_port),
+        facility=SysLogHandler.LOG_USER)
 
     handler_stderr.setFormatter(formatter)
     handler_syslog.setFormatter(formatter)

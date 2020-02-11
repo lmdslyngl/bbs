@@ -6,6 +6,10 @@ db_password = "hogehoge"
 db_name = "bbsdb2"
 db_max_pool_connections = 20
 
+# syslog系設定
+syslog_host = "127.0.0.1"
+syslog_port = 514
+
 # 掲示板一覧の1ページあたりの掲示板数
 boardlist_boards_per_page = 20
 
