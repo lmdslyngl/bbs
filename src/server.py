@@ -13,17 +13,16 @@ from views.auth_deco import login_required
 from views.template_functions import register_template_functions
 from util import init_root_logger
 
+init_root_logger()
 
 app = flask.Flask(__name__, static_url_path="/static")
 
+register_template_functions(app)
+
+app.register_blueprint(views.board.module)
+app.register_blueprint(views.user.module)
+app.register_blueprint(views.auth.module)
+app.register_blueprint(views.boardlist.module)
 
 if __name__ == "__main__":
-    init_root_logger()
-    register_template_functions(app)
-
-    app.register_blueprint(views.board.module)
-    app.register_blueprint(views.user.module)
-    app.register_blueprint(views.auth.module)
-    app.register_blueprint(views.boardlist.module)
     app.run(debug=True)
-
