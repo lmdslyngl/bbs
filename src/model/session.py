@@ -14,8 +14,8 @@ class Session:
             self,
             session_id: str,
             user_id: int,
-            created_at: datetime,
-            expire_at: datetime) -> None:
+            expire_at: datetime,
+            created_at: datetime) -> None:
 
         self.session_id = session_id
         self.user_id = user_id
@@ -86,7 +86,7 @@ class Session:
 
         session = Session(
             row["session_id"], row["user_id"],
-            row["session_created_at"], row["session_expire_at"])
+            row["session_expire_at"], row["session_created_at"])
 
         userinfo = UserInfo(
             row["user_id"], row["user_name"],
