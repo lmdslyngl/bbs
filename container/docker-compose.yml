@@ -1,0 +1,57 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:stable-alpine
+    ports:
+      - 8080:80
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:z
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:z
+      - ./nginx/log:/var/log/nginx:z
+    networks:
+      - internal
+      - external
+
+  postgres:
+    image: postgres:12-alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - ../src/dbinit.sql:/bbs/dbinit.sql:z
+      - ./postgres/data:/var/lib/postgresql/data:z
+      - ./postgres/init-bbs-db.sh:/docker-entrypoint-initdb.d/init-bbs-db.sh:z
+    networks:
+      - internal
+    environment:
+      TZ: "Asia/Tokyo"
+
+  bbs-app:
+    build: bbs-app
+    image: bbs-app
+    ports:
+      - 3031:3031
+    volumes:
+      - ../src:/bbs:z
+      - ./bbs-app/entrypoint.sh:/bbs/entrypoint.sh:z
+      - ./bbs-app/uwsgi.ini:/etc/uwsgi/uwsgi.ini:z
+      - ./bbs-app/log:/var/log/uwsgi:z
+    networks:
+      - internal
+
+  bbs-rsyslog:
+    build: bbs-rsyslog
+    image: bbs-rsyslog
+    ports:
+      - 514:514
+    volumes:
+      - ./bbs-rsyslog/rsyslog.conf:/etc/rsyslog.conf:z
+      - ./bbs-rsyslog/log:/var/log:z
+    networks:
+      - internal
+
+networks:
+  internal:
+    internal: True
+  external:
+
